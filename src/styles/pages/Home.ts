@@ -50,7 +50,7 @@ export const NavItemIcon = styled.a`
   border-radius: 50%;
   padding: 0.5rem;
   margin: 0.2rem;
-  transition: filter 300ms;
+  transition: filter 200ms;
 
   &:hover {
     filter: brightness(1.6);
@@ -60,13 +60,64 @@ export const NavItemIcon = styled.a`
 export const DropDown = styled.div`
   position: absolute;
   background-color: ${props => props.theme.colors.background};
-  top: 4.3rem;
+  top: 4.4rem;
   width: 24rem;
-  padding: 0.5rem;
+  padding: 0.4rem;
   border-radius: 0.8rem;
   transform: translateX(-45%);
   border: 0.1rem solid;
   overflow: hidden;
+
+  transition: height 200ms ease;
+`
+
+export const Menu = styled.div`
+  width: 100%;
+
+  // enter from
+  &.fade-enter {
+    position: absolute;
+    transform: translateX(-110%);
+  }
+
+  // enter to
+  &.fade-enter-active {
+    transform: translateX(0%);
+    transition: all 200ms ease;
+  }
+
+  // exit from
+  &.fade-exit {
+    position: absolute;
+  }
+
+  // exit to
+  &.fade-exit-active {
+    transform: translateX(-110%);
+    transition: all 200ms ease;
+  }
+
+  // SECONDARY MENU
+
+  &.fade-secondary-enter {
+    transform: translateX(110%);
+  }
+
+  // enter to
+  &.fade-secondary-enter-active {
+    transform: translateX(0%);
+    transition: all 200ms ease;
+  }
+
+  // exit from
+  &.fade-secondary-exit {
+  }
+
+  // exit to
+  &.fade-secondary-exit-active {
+    transform: translateX(110%);
+    transition: all 200ms ease;
+  }
 `
 
 export const MenuItem = styled.a`
@@ -75,7 +126,7 @@ export const MenuItem = styled.a`
   align-items: center;
   border-radius: 0.8rem;
   padding: 0.5rem;
-  transition: background 300ms;
+  transition: background 200ms;
 
   &:hover {
     background-color: ${props => props.theme.colors.text};
@@ -169,6 +220,11 @@ export const Pictures = styled.div`
     margin: 0;
     margin-bottom: 1rem;
     break-inside: avoid;
+
+    /* &:hover {
+      margin-left: -0.16rem;
+      width: 101.4%;
+    } */
   }
 
   img {

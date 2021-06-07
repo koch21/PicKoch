@@ -9,7 +9,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle'
 import PersonIcon from '@material-ui/icons/Person'
 import SettingIcon from '@material-ui/icons/Settings'
 import FaceIcon from '@material-ui/icons/Face'
-import GroupIcon from '@material-ui/icons/Group'
+import ArrowLeftIcon from '@material-ui/icons/ArrowBack'
 import DropDownIcon from '@material-ui/icons/ArrowDropDown'
 import {
   Container,
@@ -24,6 +24,7 @@ import {
   NavItemLI,
   NavItemIcon,
   DropDown,
+  Menu,
   MenuItem,
   IconLeft,
   IconRight
@@ -63,9 +64,19 @@ function NavItem(props) {
   )
 }
 function DropDownMenu() {
+  const [activeMenu, setActiveMenu] = useState('main') // settings
+  const [menuSize, setMenuSize] = useState(null)
+
+  function calcSize(event) {
+    const height = event.offsetHeight
+    setMenuSize(height + 6)
+  }
   function DropDownItem(props) {
     return (
-      <MenuItem href="#">
+      <MenuItem
+        href="#"
+        onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)}
+      >
         <IconLeft>{props.leftIcon} </IconLeft>
         {props.children}
         <IconRight>{props.rightIcon} </IconRight>
@@ -73,21 +84,55 @@ function DropDownMenu() {
     )
   }
   return (
-    <DropDown>
-      <DropDownItem>
-        <PersonIcon /> &nbsp; My Profile
-      </DropDownItem>
-      <DropDownItem>
-        <SettingIcon /> &nbsp; Settings
-      </DropDownItem>
-      <DropDownItem
-        leftIcon={<FaceIcon />}
-        rightIcon={<GroupIcon />}
-      ></DropDownItem>
+    <DropDown style={{ height: menuSize, paddingBottom: 4 }}>
+      {/* Main Menu */}
+      <CSSTransition
+        in={activeMenu === 'main'}
+        classNames="fade"
+        timeout={200}
+        unmountOnExit
+        onEnter={calcSize}
+      >
+        <Menu>
+          <DropDownItem>
+            <PersonIcon /> &nbsp; My Profile
+          </DropDownItem>
+          <DropDownItem>
+            <SettingIcon /> &nbsp; Settings
+          </DropDownItem>
+          <DropDownItem
+            leftIcon={<FaceIcon />}
+            goToMenu="settings"
+          ></DropDownItem>
+        </Menu>
+      </CSSTransition>
+
+      {/* Left Menu */}
+      <CSSTransition
+        in={activeMenu === 'settings'}
+        classNames="fade-secondary"
+        timeout={200}
+        unmountOnExit
+        onEnter={calcSize}
+      >
+        <Menu>
+          <DropDownItem goToMenu="main">
+            <ArrowLeftIcon /> &nbsp; Back
+          </DropDownItem>
+          <DropDownItem leftIcon={<FaceIcon />}></DropDownItem>
+          <DropDownItem leftIcon={<FaceIcon />}></DropDownItem>
+          <DropDownItem leftIcon={<FaceIcon />}></DropDownItem>
+          <DropDownItem leftIcon={<FaceIcon />}></DropDownItem>
+          <DropDownItem leftIcon={<FaceIcon />}></DropDownItem>
+          <DropDownItem leftIcon={<FaceIcon />}></DropDownItem>
+          {/* <DropDownItem rightIcon={<GroupIcon />}></DropDownItem> */}
+        </Menu>
+      </CSSTransition>
     </DropDown>
   )
 }
 
+// Main Function
 const Home: React.FC = () => {
   return (
     <Container>
