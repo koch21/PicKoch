@@ -30,6 +30,7 @@ import {
   IconLeft,
   IconRight
 } from '../styles/pages/Home'
+import { clientID } from '../../unsplash-key'
 
 // DropDown Menu
 function NavBar(props) {
@@ -131,7 +132,6 @@ const simpleGet = options => {
 // Main Function
 const Home: React.FC = () => {
   // Function to save or remove image
-  const clientID = ''
   const [photos, setPhotos] = useState([])
   const [query, setQuery] = useState('')
   const queryInput = useRef(null)
