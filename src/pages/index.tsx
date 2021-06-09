@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import Head from 'next/head'
+import superagent from 'superagent'
 
 // Styles
 import HomeIcon from '@material-ui/icons/Home'
@@ -30,18 +31,6 @@ import {
   IconRight
 } from '../styles/pages/Home'
 
-// Imports
-import img1 from '../assets/1.jpg'
-import img2 from '../assets/2.jpg'
-import img3 from '../assets/3.jpg'
-import img4 from '../assets/4.jpg'
-import img5 from '../assets/5.jpg'
-import img6 from '../assets/6.jpg'
-import img7 from '../assets/7.jpg'
-import img8 from '../assets/8.jpg'
-import img9 from '../assets/9.jpg'
-import img10 from '../assets/10.jpg'
-
 // DropDown Menu
 function NavBar(props) {
   return (
@@ -69,7 +58,7 @@ function DropDownMenu() {
 
   function calcSize(event) {
     const height = event.offsetHeight
-    setMenuSize(height + 6)
+    setMenuSize(height + 10.5)
   }
   function DropDownItem(props) {
     return (
@@ -132,8 +121,44 @@ function DropDownMenu() {
   )
 }
 
+// GetPictures
+const simpleGet = options => {
+  superagent.get(options.url).then(function (res) {
+    if (options.onSuccess) options.onSuccess(res)
+  })
+}
+
 // Main Function
 const Home: React.FC = () => {
+  // Function to save or remove image
+  const clientID = ''
+  const [photos, setPhotos] = useState([])
+  const [query, setQuery] = useState('')
+  const queryInput = useRef(null)
+
+  const numberOfPhotos = 360
+  const url =
+    'https://api.unsplash.com/photos/random/?count=' +
+    numberOfPhotos +
+    '&client_id=' +
+    clientID
+
+  useEffect(() => {
+    const photosUrl = query ? `${url}&query=${query}` : url
+
+    simpleGet({
+      url: photosUrl,
+      onSuccess: res => {
+        setPhotos(res.body)
+      }
+    })
+  }, [query, url])
+
+  const searchPhotos = e => {
+    e.preventDefault()
+    setQuery(queryInput.current.value)
+  }
+
   return (
     <Container>
       <Head>
@@ -143,7 +168,18 @@ const Home: React.FC = () => {
       <Wrapper>
         <LeftSide>
           <h1>PicKoch</h1>
-          <input type="text" placeholder="Search Pictures" />
+          <form
+            id="unsplash-search"
+            className="unsplash-search form"
+            onSubmit={searchPhotos}
+          >
+            <input
+              ref={queryInput}
+              placeholder="Search Pictures"
+              type="search"
+              defaultValue=""
+            />
+          </form>
         </LeftSide>
         <Nav>
           <ul>
@@ -180,94 +216,13 @@ const Home: React.FC = () => {
       <Main>
         <Pictures>
           <figure>
-            <img src={img1} />
-          </figure>
-          <figure>
-            <img src={img2} />
-          </figure>
-          <figure>
-            <img src={img3} />
-          </figure>
-          <figure>
-            <img src={img4} />
-          </figure>
-          <figure>
-            <img src={img5} />
-          </figure>
-          <figure>
-            <img src={img6} />
-          </figure>
-          <figure>
-            <img src={img7} />
-          </figure>
-          <figure>
-            <img src={img8} />
-          </figure>
-          <figure>
-            <img src={img9} />
-          </figure>
-          <figure>
-            <img src={img10} />
-          </figure>
-          <figure>
-            <img src={img1} />
-          </figure>
-          <figure>
-            <img src={img2} />
-          </figure>
-          <figure>
-            <img src={img3} />
-          </figure>
-          <figure>
-            <img src={img4} />
-          </figure>
-          <figure>
-            <img src={img5} />
-          </figure>
-          <figure>
-            <img src={img6} />
-          </figure>
-          <figure>
-            <img src={img7} />
-          </figure>
-          <figure>
-            <img src={img8} />
-          </figure>
-          <figure>
-            <img src={img9} />
-          </figure>
-          <figure>
-            <img src={img10} />
-          </figure>
-          <figure>
-            <img src={img1} />
-          </figure>
-          <figure>
-            <img src={img2} />
-          </figure>
-          <figure>
-            <img src={img3} />
-          </figure>
-          <figure>
-            <img src={img4} />
-          </figure>
-          <figure>
-            <img src={img5} />
-          </figure>
-          <figure>
-            <img src={img6} />
-          </figure>
-          <figure>
-            <img src={img7} />
-          </figure>
-          <figure>
-            <img src={img8} />
-          </figure>
-          <figure>
-            <img src={img9} />
-          </figure>
-          <figure>
-            <img src={img10} />
+            {photos.map(photo => {
+              return (
+                <li key={photo.id}>
+                  <img src={photo.urls.regular} />
+                </li>
+              )
+            })}
           </figure>
         </Pictures>
       </Main>

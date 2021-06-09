@@ -48,7 +48,7 @@ export const NavItemIcon = styled.a`
   width: var(--button-size);
   height: var(--button-size);
   border-radius: 50%;
-  padding: 0.5rem;
+  padding: 0.4rem;
   margin: 0.2rem;
   transition: filter 200ms;
 
@@ -62,7 +62,7 @@ export const DropDown = styled.div`
   background-color: ${props => props.theme.colors.background};
   top: 4.4rem;
   width: 24rem;
-  padding: 0.4rem;
+  padding: 0.24rem;
   border-radius: 0.8rem;
   transform: translateX(-45%);
   border: 0.1rem solid;
@@ -216,18 +216,13 @@ export const Main = styled.div`
 
 export const Pictures = styled.div`
   figure {
-    display: flex;
     margin: 0;
     margin-bottom: 1rem;
     break-inside: avoid;
-
-    /* &:hover {
-      margin-left: -0.16rem;
-      width: 101.4%;
-    } */
   }
 
   img {
+    margin-top: 0.7rem;
     width: 100%;
     border-radius: 0.4rem;
   }
